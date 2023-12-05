@@ -8,7 +8,8 @@ see [HyperV testing README](https://github.com/kubernetes-sigs/windows-testing/b
 
 Steps
 
-1. Create your cluster and ensure the cluster has at least one Windows node to test
+1. Create your cluster and ensure the cluster has at least one Windows node to execute tests against. Preferably, also
+   have two Linux nodes to run the webhook and cert-manager pods.
 2. Create a TLS certificate for secure communication
     - The Kubernetes API server uses HTTPS to communicate with webhooks. To support HTTPS, add a TLS certificate.
       You can either import an existing one from an externally trusted Certificate Authority (CA), or create your own
@@ -37,15 +38,11 @@ handler: runhcs-wcow-process
 ...
 ```
 
-5. Run the `setup.sh` script to apply the YAML manifests. The script performs various actions including
+5. Run the `setup.sh` script to apply the YAML manifests and also perform other various actions required to setup the webhook. . Take a look at the script before running it to verify what actions it performs. The script will
+    - install cert manager
+    - install the webhook
     - taint the Windows nodes to ensure only pods with tolerations can schedule on a Windows node
     - store the TLS certificate and its corresponding private key as a secret
-
-5. Run the `setup.sh` script to apply the YAML manifests. The script performs various actions including
-    - taint the Windows nodes to ensure only pods with tolerations can schedule on a Windows node
-    - store the TLS certificate and its corresponding private key as a secret
-    - installing cert manager
-    - installing the webhook
 
 6. Verify that the webhook is correctly running
     - You should see the `windows-webhook-controller-manager deployment` in a running state

@@ -10,9 +10,9 @@ Steps
 
 1. Create your cluster and ensure the cluster has at least one Windows node to test
 2. Create a TLS certificate for secure communication
-    - The Kubernetes API server uses HTTPS to communicate with webhooks. To support HTTPS, add a TLS certificate.
-      You can either import an existing one from an externally trusted Certificate Authority (CA), or create your own
-      using the following script and save the CA bundle for the next section.
+   - The Kubernetes API server uses HTTPS to communicate with webhooks. To support HTTPS, add a TLS certificate.
+     You can either import an existing one from an externally trusted Certificate Authority (CA), or create your own
+     using the following script and save the CA bundle for the next section.
 
 ```
 ./generate-cert.sh
@@ -38,32 +38,32 @@ handler: runhcs-wcow-process
 ```
 
 5. Run the `setup.sh` script to apply the YAML manifests. The script performs various actions including
-    - taint the Windows nodes to ensure only pods with tolerations can schedule on a Windows node
-    - store the TLS certificate and its corresponding private key as a secret
+   - taint the Windows nodes to ensure only pods with tolerations can schedule on a Windows node
+   - store the TLS certificate and its corresponding private key as a secret
 
 5. Run the `setup.sh` script to apply the YAML manifests. The script performs various actions including
-    - taint the Windows nodes to ensure only pods with tolerations can schedule on a Windows node
-    - store the TLS certificate and its corresponding private key as a secret
-    - installing cert manager
-    - installing the webhook
+   - taint the Windows nodes to ensure only pods with tolerations can schedule on a Windows node
+   - store the TLS certificate and its corresponding private key as a secret
+   - installing cert manager
+   - installing the webhook
 
 6. Verify that the webhook is correctly running
-    - You should see the `windows-webhook-controller-manager deployment` in a running state
+   - You should see the `windows-webhook-controller-manager deployment` in a running state
 
 ```
 kubect get pods -n windows-webhook-system
 ```
 
 7. Test if the webhook is working by deploying a pod without a node selector
-    - Verify if the webhook took effect correctly by checking the logs. You should see a 200 code response with a log
-      such as the following
+   - Verify if the webhook took effect correctly by checking the logs. You should see a 200 code response with a log
+     such as the following
    ```
    ...
    2023-10-24T06:29:00Z	INFO	webhook	Pod win-webserver-2019-56f7d48b87-ncmlz is being mutated
    2023-10-24T06:29:00Z	DEBUG	controller-runtime.webhook.webhooks	wrote response	{"webhook": "/mutate-v1-pod", "code": 200, "reason": "", "UID": "0c6a07f2-71a0-4d6d-a756-e75704da4d3e", "allowed": true}
    ...
    ```
-    - Describe the pod to see if the node selector is automatically updated to the following
+   - Describe the pod to see if the node selector is automatically updated to the following
    ```
    ...
    Node-Selectors:   kubernetes.io/arch=amd64
